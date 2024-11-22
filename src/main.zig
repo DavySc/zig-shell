@@ -31,7 +31,7 @@ pub fn main() !void {
     }
 }
 
-fn handler(T: Builtin, args: []const u8) !void {
+fn handle_builtin(T: Builtin, args: []const u8) !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     const allocator = gpa.allocator();
     const path_var = try std.fs.cwd().realpathAlloc(allocator, ".");
@@ -86,7 +86,7 @@ fn handle_input(input: []const u8) !void {
     const shell_builtin = std.meta.stringToEnum(Builtin, first_arg);
 
     if (shell_builtin) |bi| {
-        try handler(bi, rest_of_input);
+        try handle_builtin(bi, rest_of_input);
     } else {
         try handle_default(first_arg, rest_of_input);
     }
